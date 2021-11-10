@@ -14,6 +14,7 @@ export default function App(props) {
   };
   return (
     <>
+      <br />
       <Editor
         onInit={(evt, editor) => (editorRef.current = editor)}
         initialValue={`${props.value}`}

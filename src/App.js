@@ -2,16 +2,16 @@ import React, { useEffect } from "react";
 import "./App.css";
 import { Form, Row, InputGroup, Col, FormControl } from "react-bootstrap";
 import Main from "./components/main/main";
-import Email from "./components/email/email";
 import { BrowserRouter, Routes, Route, Link, NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { addTabsState } from "./redux/reducers/main";
 const OPTIONS = {
   main: {
     name: "Main settings", // tab name
     options: [
       {
         name: "role", // option attr name
-        value: ["shop_manager"], // defalut option value
+        value: [{ label: "Customer", value: "customer" }], // defalut option value
         title: "Who can manage", // option title
         description: "Who can manage", // option description
         type: "select", // option type
@@ -155,13 +155,53 @@ const OPTIONS = {
       },
     ],
   },
+  third: {
+    name: "Third",
+    options: [
+      {
+        name: "e_another",
+        value: "en",
+        title: "Title",
+        description: "desc",
+        type: "text",
+        multiple: false,
+        order: 10,
+      },
+    ],
+  },
 };
 function App() {
-  const main = useSelector((state) => state.settings.main);
-  const email = useSelector((state) => state.settings.email);
-
+  // const main = useSelector((state) => state.settings.main);
+  // const email = useSelector((state) => state.settings.email);
+  const TABS = Object.keys(OPTIONS);
+  const dispatch = useDispatch();
+  const generateValueState = () => {
+    let state = {};
+    TABS.map((tab) => {
+      state[tab] = {};
+      OPTIONS[tab].options.map((op) => {
+        if (
+          op.type === "select" ||
+          op.type === "text" ||
+          op.type === "checkbox"
+        ) {
+          state[tab][op.name] = op.value;
+        } else if (op.type === "switch") {
+          op.values.map((childOp) => {
+            state[tab][childOp.name] = { value: childOp.value };
+            childOp.options.map((nested) => {
+              state[tab][childOp.name][nested.name] = nested.value;
+            });
+          });
+        }
+      });
+    });
+    dispatch(addTabsState(state));
+    console.log("Generated state", state);
+  };
   useEffect(() => {
-    console.log(OPTIONS);
+    console.log(Object.keys(OPTIONS));
+    generateValueState();
     return () => {};
   }, []);
   return (
@@ -172,20 +212,27 @@ function App() {
         </div>
         <div className="row mt-5">
           <div className="col-md-2">
-            <NavLink
-              to="/"
-              activeclassname="settings-active"
-              className="mb-2 d-block"
-            >
-              <button className="btn setting-btn">Main</button>
-            </NavLink>
-            <NavLink to="/email" activeclassname="settings-active">
-              <button className="btn  setting-btn">Email</button>
-            </NavLink>
+            {TABS.map((tab) => {
+              return (
+                <NavLink
+                  to={`/${tab}`}
+                  activeclassname="settings-active"
+                  className="mb-2 d-block"
+                >
+                  <button className="btn setting-btn">{tab}</button>
+                </NavLink>
+              );
+            })}
           </div>
           <Routes>
-            <Route path="/" element={<Main options={main} />} />
-            <Route path="/email" element={<Email options={email} />} />
+            {TABS.map((tab) => {
+              return (
+                <Route
+                  path={`/${tab}`}
+                  element={<Main options={OPTIONS[tab]} name={tab} />}
+                />
+              );
+            })}
           </Routes>
         </div>
       </div>
