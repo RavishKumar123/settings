@@ -13,7 +13,6 @@ const Main = ({ options, name }) => {
   const dispatch = useDispatch();
   const main = useSelector((state) => state.settings.tabs[name]);
   const getInputBox = (option, innerMain, isSwitch, propertyName) => {
-    console.log(option, " ++", name);
     switch (option.type) {
       case "text":
         return (
@@ -26,7 +25,6 @@ const Main = ({ options, name }) => {
                 tabName: name,
                 propertyName: option.name,
               };
-              console.log(payload);
               dispatch(
                 isSwitch
                   ? changeNestedMainValue(payload)
@@ -53,7 +51,6 @@ const Main = ({ options, name }) => {
                 option: option,
                 tabName: name,
               };
-              console.log(payload);
               dispatch(changeMainValue(payload));
             }}
             isMulti={option.multiple}
@@ -71,7 +68,6 @@ const Main = ({ options, name }) => {
                 option: option,
                 tabName: name,
               };
-              console.log(payload);
               dispatch(changeMainValue(payload));
             }}
           />
@@ -96,7 +92,6 @@ const Main = ({ options, name }) => {
                           tabName: name,
                           propertyName: "value",
                         };
-                        console.log(payload);
                         dispatch(changeNestedMainValue(payload));
                       }}
                     />
@@ -106,7 +101,6 @@ const Main = ({ options, name }) => {
                   </div>
                   {innerMain[value.name].value &&
                     value.options.map((op) => {
-                      console.log("OP", op);
                       return getInputBox(
                         op,
                         innerMain[value.name],
@@ -131,7 +125,6 @@ const Main = ({ options, name }) => {
                 tabName: name,
                 propertyName: option.name,
               };
-              console.log(payload);
               dispatch(
                 isSwitch
                   ? changeNestedMainValue(payload)
@@ -146,7 +139,6 @@ const Main = ({ options, name }) => {
     }
   };
   useEffect(() => {
-    console.log("main ", main);
     return () => {};
   }, []);
   return (

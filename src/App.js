@@ -197,10 +197,8 @@ function App() {
       });
     });
     dispatch(addTabsState(state));
-    console.log("Generated state", state);
   };
   useEffect(() => {
-    console.log(Object.keys(OPTIONS));
     generateValueState();
     return () => {};
   }, []);

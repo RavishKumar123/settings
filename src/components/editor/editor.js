@@ -5,19 +5,16 @@ export default function App(props) {
   const editorRef = useRef(null);
   const log = () => {
     if (editorRef.current) {
-      console.log(editorRef.current.getContent());
     }
   };
   const myCustomOnChangeHandler = (inst) => {
-    console.log("Some one modified something");
-    console.log("The HTML is now:" + inst);
   };
   return (
     <>
       <br />
       <Editor
         onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue={`${props.value}`}
+        value={`${props.value}`}
         onEditorChange={(text) => props.onChange(text)}
         init={{
           height: 350,

@@ -10,12 +10,10 @@ const counterSlice = createSlice({
       state.tabs = action.payload;
     },
     changeMainValue: (state, action) => {
-      console.log("paylod", action.payload);
       state.tabs[action.payload.tabName][action.payload.option.name] =
         action.payload.value;
     },
     changeNestedMainValue: (state, action) => {
-      console.log("paylod", action.payload);
       state.tabs[action.payload.tabName][action.payload.option.name][
         action.payload.propertyName
       ] = action.payload.value;
