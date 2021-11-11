@@ -3,12 +3,6 @@ import { Editor } from "@tinymce/tinymce-react";
 
 export default function App(props) {
   const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-    }
-  };
-  const myCustomOnChangeHandler = (inst) => {
-  };
   return (
     <>
       <br />

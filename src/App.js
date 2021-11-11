@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { Form, Row, InputGroup, Col, FormControl } from "react-bootstrap";
+import { Row, Col, Tab, Nav } from "react-bootstrap";
 import Main from "./components/main/main";
-import { BrowserRouter, Routes, Route, Link, NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addTabsState } from "./redux/reducers/main";
 const OPTIONS = {
   main: {
@@ -11,7 +10,7 @@ const OPTIONS = {
     options: [
       {
         name: "role", // option attr name
-        value: [{ label: "Customer", value: "customer" }], // defalut option value
+        value: ["customer"], // defalut option value
         title: "Who can manage", // option title
         description: "Who can manage", // option description
         type: "select", // option type
@@ -171,70 +170,69 @@ const OPTIONS = {
   },
 };
 function App() {
-  // const main = useSelector((state) => state.settings.main);
-  // const email = useSelector((state) => state.settings.email);
   const TABS = Object.keys(OPTIONS);
   const dispatch = useDispatch();
-  const generateValueState = () => {
-    let state = {};
-    TABS.map((tab) => {
-      state[tab] = {};
-      OPTIONS[tab].options.map((op) => {
-        if (
-          op.type === "select" ||
-          op.type === "text" ||
-          op.type === "checkbox"
-        ) {
-          state[tab][op.name] = op.value;
-        } else if (op.type === "switch") {
-          op.values.map((childOp) => {
-            state[tab][childOp.name] = { value: childOp.value };
-            childOp.options.map((nested) => {
-              state[tab][childOp.name][nested.name] = nested.value;
-            });
-          });
-        }
-      });
-    });
-    dispatch(addTabsState(state));
-  };
   useEffect(() => {
+    const generateValueState = () => {
+      let state = {};
+      TABS.forEach((tab) => {
+        OPTIONS[tab].options.forEach((op) => {
+          if (
+            op.type === "select" ||
+            op.type === "text" ||
+            op.type === "checkbox"
+          ) {
+            state[op.name] = op.value;
+          } else if (op.type === "switch") {
+            op.values.forEach((childOp) => {
+              state[childOp.name] = childOp.value;
+              childOp.options.forEach((nested) => {
+                state[nested.name] = nested.value;
+              });
+            });
+          }
+        });
+      });
+      dispatch(addTabsState(state));
+    };
     generateValueState();
     return () => {};
-  }, []);
+    
+  }, []); // eslint-disable-next-line react-hooks/exhaustive-deps
   return (
-    <BrowserRouter>
-      <div className="container">
-        <div className="header pt-5 pb-3 border-bottom">
-          <p className="h1">Settings</p>
-        </div>
-        <div className="row mt-5">
-          <div className="col-md-2">
-            {TABS.map((tab) => {
-              return (
-                <NavLink
-                  to={`/${tab}`}
-                  activeclassname="settings-active"
-                  className="mb-2 d-block"
-                >
-                  <button className="btn setting-btn">{tab}</button>
-                </NavLink>
-              );
-            })}
-          </div>
-          <Routes>
-            {TABS.map((tab) => {
-              return (
-                <Route
-                  path={`/${tab}`}
-                  element={<Main options={OPTIONS[tab]} name={tab} />}
-                />
-              );
-            })}
-          </Routes>
-        </div>
+    <div className="container">
+      <div className="header pt-5 pb-3 border-bottom">
+        <p className="h1">Settings</p>
       </div>
-    </BrowserRouter>
+      <div className="row mt-5">
+        <Tab.Container id="left-tabs-example" defaultActiveKey={TABS[0]}>
+          <Row>
+            <Col sm={2}>
+              <Nav variant="pills" className="flex-column">
+                {TABS.map((tab, index) => {
+                  return (
+                    <Nav.Item key={index}>
+                      <Nav.Link eventKey={tab}>{tab}</Nav.Link>
+                    </Nav.Item>
+                  );
+                })}
+              </Nav>
+            </Col>
+            <Col sm={10}>
+              <Tab.Content>
+                {TABS.map((tab, index) => {
+                  return (
+                    <Tab.Pane eventKey={tab} key={index}>
+                      <Main options={OPTIONS[tab]} name={tab} />
+                    </Tab.Pane>
+                  );
+                })}
+              </Tab.Content>
+            </Col>
+          </Row>
+        </Tab.Container>
+      </div>
+    </div>
   );
 }
 

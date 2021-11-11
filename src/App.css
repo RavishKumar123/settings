@@ -1,9 +1,10 @@
-.active {
+.nav-link.active {
   display: block;
   box-shadow: 1px 2px 3px 1px lightgrey;
   background-color: white !important;
   width: 63%;
   border-radius: 5px;
+  color: gray !important;
 }
 
 .setting-btn {
@@ -19,4 +20,8 @@
 }
 a {
   text-decoration: none !important;
+}
+.nav-link{
+  color: grey !important;
+  cursor: pointer;
 }

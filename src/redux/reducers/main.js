@@ -1,27 +1,22 @@
-import { createSlice, configureStore } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-const counterSlice = createSlice({
+const settingSlice = createSlice({
   name: "settings",
   initialState: {
     tabs: {},
+    stateReady: false,
   },
   reducers: {
     addTabsState: (state, action) => {
       state.tabs = action.payload;
+      state.stateReady = true;
     },
     changeMainValue: (state, action) => {
-      state.tabs[action.payload.tabName][action.payload.option.name] =
-        action.payload.value;
-    },
-    changeNestedMainValue: (state, action) => {
-      state.tabs[action.payload.tabName][action.payload.option.name][
-        action.payload.propertyName
-      ] = action.payload.value;
+      state.tabs[action.payload.option.name] = action.payload.value;
     },
   },
 });
 
-export const { changeMainValue, changeNestedMainValue, addTabsState } =
-  counterSlice.actions;
+export const { changeMainValue, addTabsState } = settingSlice.actions;
 
-export default counterSlice.reducer;
+export default settingSlice.reducer;
