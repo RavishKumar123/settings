@@ -168,6 +168,35 @@ const OPTIONS = {
       },
     ],
   },
+  fourth: {
+    name: "Fourth",
+    options: [
+      {
+        name: "f_another",
+        value: "en",
+        title: "Title",
+        description: "Defination",
+        type: "text",
+        multiple: false,
+        order: 10,
+      },
+      {
+        name: "timing",
+        value: 1,
+        title: "AM/PM time Format",
+        description: "AM/PM time Format",
+        type: "checkbox", // input type checkbox
+        multiple: false,
+        order: 20,
+        values: [
+          {
+            label: "",
+            value: false,
+          },
+        ],
+      },
+    ],
+  },
 };
 function App() {
   const TABS = Object.keys(OPTIONS);
@@ -197,7 +226,6 @@ function App() {
     };
     generateValueState();
     return () => {};
-    
   }, []); // eslint-disable-next-line react-hooks/exhaustive-deps
   return (
     <div className="container">

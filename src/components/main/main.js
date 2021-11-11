@@ -17,7 +17,7 @@ const Main = ({ options, name }) => {
         return (
           <InputGroup key={index} className="w-75">
             <FormControl
-              id={main[option.name]}
+              id={option.name}
               placeholder=""
               value={main[option.name]}
               onChange={(event) => {
@@ -72,7 +72,7 @@ const Main = ({ options, name }) => {
                   <div className="d-flex justify-content-between align-items-center">
                     <Form.Check
                       type="switch"
-                      id={main[value.name]}
+                      id={value.name}
                       label={value.label}
                       checked={main[value.name]}
                       onChange={(event) => {
